@@ -2,11 +2,11 @@ import ItemListaImg from './../assets/item-lista.png'
 import type { TipoLista } from '../App'
 
 
-export default function ExibeLista({lista}: {lista: TipoLista}) {
+export default function ExibeLista({lista, mensagem}: {lista: TipoLista, mensagem: string}) {
 
     return (
-
         <ul className="list bg-base-100 rounded-box shadow-md">
+            <p className='mt-5 mb-5'>{mensagem}</p>
             <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime ut necessitatibus deleniti vel mollitia aperiam nesciunt hic? Corrupti est dolorum quia, itaque sapiente minima exercitationem sequi sit odio error fuga?</li>
             {lista && lista.length > 0 ?
                 lista.map((item) => (
@@ -26,10 +26,7 @@ export default function ExibeLista({lista}: {lista: TipoLista}) {
                             <svg className="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
                         </button> */}
                     </li>
-                )) :
-                (
-                    <p>Lista Vazia</p>
-                )}
+                )) : ''}
         </ul>
     )
 }

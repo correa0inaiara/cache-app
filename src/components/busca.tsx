@@ -1,29 +1,17 @@
-import { useEffect, useState } from "react"
-import type { TipoItem, TipoLista } from "../App"
+import { useState } from "react"
 
-export default function CampoBusca({lista}: {lista: TipoLista}) {
+interface CampoBuscaProps {
+    onBuscar: (termo: string) => void
+}
 
-    const [input, setInput] = useState('')
-    const [itemEncontrado, setItemEncontrado] = useState<TipoItem>({} as TipoItem)
+export default function CampoBusca({onBuscar}: CampoBuscaProps) {
+
+    const [termo, setTermo] = useState('')
 
     const handleOnChange = (event: any) => {
         let value = event.target.value
-
-        if (!value || value == '')
-            return
-
-        let _value = value.trim().toLowerCase()
-        setInput(value)
-        buscaItem(_value)
-    }
-
-    const buscaItem = (_value: string) => {
-        for (const item of lista) {
-            const nome = item.nome.trim().toLowerCase()
-            const categoria = item.categoria.trim().toLowerCase()
-            if (nome.includes(_value) || categoria.includes(_value))
-                setItemEncontrado(item)
-        }
+        setTermo(value)
+        onBuscar(value)
     }
 
     return (
@@ -42,7 +30,7 @@ export default function CampoBusca({lista}: {lista: TipoLista}) {
                     </g>
                 </svg>
                 <input 
-                    value={input}
+                    value={termo}
                     onChange={(e) => handleOnChange(e)}
                     type="search" 
                     required 

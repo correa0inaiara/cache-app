@@ -34,14 +34,26 @@ function App() {
         gerarLista()
     }, [])
 
-    const handleFiltro = () => {
-      
+    const handleFiltro = (termoBusca: string) => {
+      const termo = termoBusca.trim().toLowerCase()
+      const filtrada = lista.filter(item => 
+        item.nome.trim().toLowerCase().includes(termo) || 
+        item.categoria.trim().toLowerCase().includes(termo)
+      )
+
+      if (filtrada.length == 0) {
+
+      }
+
+      setListaFiltrada(filtrada)
     }
 
   return (
     <>
       <CampoBusca onBuscar={handleFiltro} />
-      <ExibeLista lista={lista} />
+      <ExibeLista 
+        lista={listaFiltrada.length > 0 ? listaFiltrada : lista} 
+        mensagem={listaFiltrada.length == 0 ? 'Item não encontrado' : ''} />
     </>
   )
 }
