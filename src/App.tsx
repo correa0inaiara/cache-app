@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import CampoBusca from './components/busca'
 import ExibeLista from './components/lista'
+import ContadorLikes from './components/contador'
 
 export type TipoItem = {
     id: number
@@ -13,7 +14,8 @@ export type TipoLista = TipoItem[]
 
 function App() {
     const [lista, setLista] = useState<TipoLista>([])
-    const [listaFiltrada, setListaFiltrada] = useState<TipoLista>([])
+    const [termo, setTermo] = useState('')
+    const [likes, setLikes] = useState(0)
 
     const gerarLista = () => {
         let _lista: TipoLista = []
@@ -29,31 +31,33 @@ function App() {
         setLista(_lista)
     }
 
-
     useEffect(() => {
         gerarLista()
     }, [])
 
+    const handleClique = () => {
+      setLikes(likes + 1)
+    }
+
     const handleFiltro = (termoBusca: string) => {
       const termo = termoBusca.trim().toLowerCase()
-      const filtrada = lista.filter(item => 
-        item.nome.trim().toLowerCase().includes(termo) || 
-        item.categoria.trim().toLowerCase().includes(termo)
-      )
-
-      if (filtrada.length == 0) {
-
-      }
-
-      setListaFiltrada(filtrada)
+      setTermo(termo)
     }
+
+    const listaFiltrada = useMemo(() => {
+        return lista.filter(item => 
+          item.nome.trim().toLowerCase().includes(termo) || 
+          item.categoria.trim().toLowerCase().includes(termo)
+        )
+      }, [lista, termo])
 
   return (
     <>
+      <ContadorLikes onClicar={handleClique} numLikes={likes} />
       <CampoBusca onBuscar={handleFiltro} />
       <ExibeLista 
-        lista={listaFiltrada.length > 0 ? listaFiltrada : lista} 
-        mensagem={listaFiltrada.length == 0 ? 'Item não encontrado' : ''} />
+        lista={listaFiltrada}
+      />
     </>
   )
 }
