@@ -5,3 +5,9 @@ export type TipoItem = {
 }
 
 export type TipoLista = TipoItem[]
+
+export interface CacheItem {
+    data: TipoLista
+    expiraEm: number
+    versao: string
+}

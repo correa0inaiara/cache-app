@@ -3,7 +3,7 @@ import dados from '../mock/dados.json'
 
 const dadosMocados: TipoLista = dados as TipoLista
 
-export class Servico {
+export class BuscaDados {
     // simulação de delay da api
     private delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 

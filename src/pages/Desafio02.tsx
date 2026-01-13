@@ -1,36 +1,63 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { TipoItem, TipoLista } from '../types/lista'
+import type { TipoLista } from '../types/lista'
 import ContadorLikes from '../components/contador'
 import CampoBusca from '../components/busca'
 import ExibeLista from '../components/lista'
 import Paginacao from '../components/paginacao'
-import { Servico } from '../services/servico'
+import { BuscaDados } from '../services/buscaDados'
+import { Cache } from '../services/cache'
 
 export const Desafio02 = () => {
-    // const [lista, setLista] = useState<TipoLista>([])
     const [termo, setTermo] = useState('')
     const [likes, setLikes] = useState(0)
     const [paginaAtual, setPaginaAtual] = useState(1)
     const [novaPagina, setNovaPagina] = useState(1)
     const [totalPaginas, setTotalPaginas] = useState(0)
-    const [totalItens, setTotalItens] = useState(0)
     const [numItensExibir, setNumItensExibir] = useState(15)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [dados, setDados] = useState<TipoLista>([])
-    const servico = new Servico();
+    const [chave, setChave] = useState('')
+    // const [dadosCache, setDadosCache] = useState<TipoLista>([])
 
-    const carregarDados = async () =>{
+    const servicoBuscaDados = new BuscaDados();
+    const servicoCache = new Cache();
+
+    useEffect(() => {
+        console.log("useEffect chave")
+        const _dadosCache = servicoCache.recuperar(chave)
+        console.log('_dadosCache', _dadosCache)
+        if (_dadosCache && _dadosCache.length > 0) {
+            // setDadosCache(_dadosCache)
+            carregarDados(_dadosCache)
+        } else {
+            // setDadosCache([])
+            carregarDados([])
+        }
+
+    }, [chave])
+
+    const carregarDados = async (_dados: TipoLista | []) => {
+        console.log("carregarDados")
         try {
             setLoading(true)
             setError('')
             setDados([])
-            const dados = await servico.getDadosPorPagina(numItensExibir, novaPagina)
-            let _totalPaginas = await servico.getTotalDados()
 
+            let dados
+            // console.log("dadosCache", dadosCache)
+            if (_dados && _dados.length > 0) {
+                console.log('dadosCache')
+                setDados(_dados)
+            } else {
+                console.log('dados api')
+                dados = await servicoBuscaDados.getDadosPorPagina(numItensExibir, novaPagina)
+                setChave('dados_pagina_' + paginaAtual)
+                servicoCache.salvar(chave, dados)
+                setDados(dados)
+            }
+            let _totalPaginas = await servicoBuscaDados.getTotalDados()
             setTotalPaginas(Math.round(_totalPaginas / numItensExibir))
-            setTotalItens(dados.length)
-            setDados(dados)
             setError(null)
         } catch (error) {
             setError('Erro ao carregar dados');
@@ -42,23 +69,26 @@ export const Desafio02 = () => {
     }
 
     const handleAvancar = () => {
+        console.log('handleAvancar')
         setNovaPagina(paginaAtual + 1)
         setPaginaAtual(novaPagina)
+        setChave('dados_pagina_' + (paginaAtual + 1))
     }
 
     const handleVoltar = () => {
+        console.log('handleVoltar')
         setNovaPagina(paginaAtual - 1)
         setPaginaAtual(novaPagina)
+        setChave('dados_pagina_' + (paginaAtual - 1))
     }
 
     const handleNovaPagina = (numNovaPagina: number) => {
+        console.log('handleNovaPagina')
+        console.log('numNovaPagina', numNovaPagina)
         setNovaPagina(numNovaPagina)
         setPaginaAtual(numNovaPagina)
+        setChave('dados_pagina_' + numNovaPagina)
     }
-
-    useEffect(() => {
-        carregarDados()
-    }, [novaPagina, numItensExibir])
 
     const handleClique = () => {
       setLikes(likes + 1)

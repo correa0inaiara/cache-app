@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface PaginacaoProps {
     onAvancar: () => void
     onVoltar: () => void
@@ -26,6 +24,7 @@ export default function Paginacao({onAvancar, onVoltar, onNovaPagina, totalPagin
     for (let i = 0; i < totalPagina; i++) {
         paginas.push(
             <button 
+                key={i+1}
                 onClick={() => handleNovaPagina(i+1)} 
                 className="join-item btn">{i + 1}</button>
         )
