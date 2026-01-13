@@ -3,9 +3,11 @@ import ItemListaImg from './../assets/item-lista.png'
 
 interface ExibeListaProps {
     lista: TipoLista
+    loading: boolean
+    error: string | null
 }
 
-export default function ExibeLista({lista}: ExibeListaProps) {
+export default function ExibeLista({lista, loading, error}: ExibeListaProps) {
 
     return (
         <ul className="list bg-base-100 rounded-box shadow-md">
@@ -29,7 +31,18 @@ export default function ExibeLista({lista}: ExibeListaProps) {
                 (
                     <li key="00">
                         <div className='flex justify-center mt-5 mb-5'>
-                            <p className='text-center'>Item não encontrado</p>
+                            {loading ? (
+                                <span className="loading loading-spinner loading-md"></span>
+                            ) : (error ? (
+                                <div role="alert" className="alert alert-error">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span>{error}</span>
+                                </div>
+                            )
+                                : <p className='text-center'>Item não encontrado</p>
+                            ) }
                         </div>
                     </li>
                 )

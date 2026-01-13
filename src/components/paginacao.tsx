@@ -10,11 +10,11 @@ interface PaginacaoProps {
 export default function Paginacao({onAvancar, onVoltar, onNovaPagina, totalPagina}: PaginacaoProps) {
 
     const handleOnVoltar = () => {
-        onVoltar
+        onVoltar()
     }
 
     const handleOnAvancar = () => {
-        onAvancar
+        onAvancar()
     }
 
     const handleNovaPagina = (numNovaPagina: number) => {

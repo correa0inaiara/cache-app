@@ -12,20 +12,6 @@ export class Servico {
         return [...dadosMocados]
     }
 
-    /**
-     * pagina 1
-     * quantidade 10
-     * index = 0, 10
-     * 
-     * pagina 2
-     * quantidade 10
-     * index = ((10 * 2) - 10), (10 * 2)
-     * 
-     * pagina 3
-     * quantidade 10
-     * index = ((10 * 3) - 10), (10 * 3)
-     */
-
     async getDadosPorPagina(quantidade: number, pagina: number): Promise<TipoLista> {
         await this.delay(1500)
         
@@ -40,9 +26,7 @@ export class Servico {
             index = _quantidade - quantidade
         }
         
-        console.log('index, pagina, quantidade, _quantidade', index, pagina, quantidade, _quantidade)
         const dados = dadosMocados.slice(index, _quantidade)
-        console.log('dados', dados)
         return [...dados]
     }
 

@@ -27,12 +27,8 @@ export const Desafio02 = () => {
             setDados([])
             const dados = await servico.getDadosPorPagina(numItensExibir, novaPagina)
             let _totalPaginas = await servico.getTotalDados()
-            
-            console.log('dados', dados)
-            console.log('_totalPaginas', _totalPaginas)
 
             setTotalPaginas(Math.round(_totalPaginas / numItensExibir))
-            setPaginaAtual(1)
             setTotalItens(dados.length)
             setDados(dados)
             setError(null)
@@ -46,17 +42,18 @@ export const Desafio02 = () => {
     }
 
     const handleAvancar = () => {
-
+        setNovaPagina(paginaAtual + 1)
+        setPaginaAtual(novaPagina)
     }
 
     const handleVoltar = () => {
-        
+        setNovaPagina(paginaAtual - 1)
+        setPaginaAtual(novaPagina)
     }
 
     const handleNovaPagina = (numNovaPagina: number) => {
-        console.log("handleNovaPagina")
-        console.log('numNovaPagina', numNovaPagina)
         setNovaPagina(numNovaPagina)
+        setPaginaAtual(numNovaPagina)
     }
 
     useEffect(() => {
@@ -86,6 +83,8 @@ export const Desafio02 = () => {
       <CampoBusca onBuscar={handleFiltro} />
       <ExibeLista 
         lista={dadosFiltrados}
+        loading={loading}
+        error={error}
       />
       <Paginacao 
         onAvancar={handleAvancar} 
