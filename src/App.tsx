@@ -1,65 +1,13 @@
-import { useEffect, useMemo, useState } from 'react'
-import './App.css'
-import CampoBusca from './components/busca'
-import ExibeLista from './components/lista'
-import ContadorLikes from './components/contador'
+import { NavLink } from 'react-router'
 
-export type TipoItem = {
-    id: number
-    nome: string
-    categoria: string
-}
-
-export type TipoLista = TipoItem[]
-
-function App() {
-    const [lista, setLista] = useState<TipoLista>([])
-    const [termo, setTermo] = useState('')
-    const [likes, setLikes] = useState(0)
-
-    const gerarLista = () => {
-        let _lista: TipoLista = []
-        for (let i = 0; i < 1000; i++) {
-            let item: TipoItem = {
-                id: (i + 1),
-                nome: 'Nome ' + (i + 1),
-                categoria: 'Categoria ' + (i + 1)
-            }
-
-            _lista.push(item)
-        }
-        setLista(_lista)
-    }
-
-    useEffect(() => {
-        gerarLista()
-    }, [])
-
-    const handleClique = () => {
-      setLikes(likes + 1)
-    }
-
-    const handleFiltro = (termoBusca: string) => {
-      const termo = termoBusca.trim().toLowerCase()
-      setTermo(termo)
-    }
-
-    const listaFiltrada = useMemo(() => {
-        return lista.filter(item => 
-          item.nome.trim().toLowerCase().includes(termo) || 
-          item.categoria.trim().toLowerCase().includes(termo)
-        )
-      }, [lista, termo])
-
+export default function App() {
   return (
-    <>
-      <ContadorLikes onClicar={handleClique} numLikes={likes} />
-      <CampoBusca onBuscar={handleFiltro} />
-      <ExibeLista 
-        lista={listaFiltrada}
-      />
-    </>
+    <div className='min-h-screen flex flex-col items-center mt-20 p-5'>
+      <p>Lista de Desafios relacionados à Cache com React</p>
+      <ul className="flex gap-5 mt-5">
+        <li><NavLink to="/desafio01" className="btn px-4 py-2 rounded-lg">Desafio 01</NavLink></li>
+        <li><NavLink to="/desafio02" className="btn px-4 py-2 rounded-lg">Desafio 02</NavLink></li>
+      </ul>
+    </div>
   )
 }
-
-export default App

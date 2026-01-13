@@ -1,5 +1,5 @@
+import type { TipoLista } from '../types/lista'
 import ItemListaImg from './../assets/item-lista.png'
-import type { TipoLista } from '../App'
 
 interface ExibeListaProps {
     lista: TipoLista
@@ -24,13 +24,14 @@ export default function ExibeLista({lista}: ExibeListaProps) {
                             <div>{item.nome}</div>
                             <div className="text-xs uppercase font-semibold opacity-60">{item.categoria}</div>
                         </div>
-                        {/* <button className="btn btn-square btn-ghost">
-                            <svg className="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-                        </button> */}
                     </li>
                 )) : 
                 (
-                    <p className='mt-5 mb-5'>Item não encontrado</p>
+                    <li key="00">
+                        <div className='flex justify-center mt-5 mb-5'>
+                            <p className='text-center'>Item não encontrado</p>
+                        </div>
+                    </li>
                 )
             }
         </ul>
