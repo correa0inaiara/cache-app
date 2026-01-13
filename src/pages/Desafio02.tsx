@@ -14,7 +14,7 @@ export const Desafio02 = () => {
     const [novaPagina, setNovaPagina] = useState(1)
     const [totalPaginas, setTotalPaginas] = useState(0)
     const [totalItens, setTotalItens] = useState(0)
-    const [numItensExibir, setNumItensExibir] = useState(10)
+    const [numItensExibir, setNumItensExibir] = useState(15)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [dados, setDados] = useState<TipoLista>([])
@@ -58,7 +58,7 @@ export const Desafio02 = () => {
 
     useEffect(() => {
         carregarDados()
-    }, [novaPagina])
+    }, [novaPagina, numItensExibir])
 
     const handleClique = () => {
       setLikes(likes + 1)
@@ -76,11 +76,27 @@ export const Desafio02 = () => {
         )
     }, [dados, termo])
 
+    const handleQuantidadeItensExibir = (quantidadeItensExibir: number) => {
+        setNovaPagina(1)
+        setPaginaAtual(1)
+        setNumItensExibir(quantidadeItensExibir)
+    }
+
   return (
 
     <div className='min-h-screen flex flex-col items-center justify-center p-5'>
       <ContadorLikes onClicar={handleClique} numLikes={likes} />
-      <CampoBusca onBuscar={handleFiltro} />
+      <div className='flex items-center justify-center gap-5'>
+        <CampoBusca onBuscar={handleFiltro} />
+        <select defaultValue="Pick a color" className="select">
+            <option disabled={true}>Exibir</option>
+            <option onClick={() => handleQuantidadeItensExibir(15)}>15</option>
+            <option onClick={() => handleQuantidadeItensExibir(25)}>25</option>
+            <option onClick={() => handleQuantidadeItensExibir(50)}>50</option>
+            <option onClick={() => handleQuantidadeItensExibir(75)}>75</option>
+            <option onClick={() => handleQuantidadeItensExibir(100)}>100</option>
+        </select>
+      </div>
       <ExibeLista 
         lista={dadosFiltrados}
         loading={loading}

@@ -19,7 +19,6 @@ export class Servico {
         let _quantidade
         if (pagina == 1) {
             index = 0
-            quantidade = 10
             _quantidade = quantidade
         } else {
             _quantidade = quantidade * pagina
